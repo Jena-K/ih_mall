@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from infrastructure.database import User, get_async_session
-from models.profile.address_schema import AddressDisplayDto, CreateAddressDto
+from models.profile.address_schema import AddressDisplayDto, AddressListDisplayDto, CreateAddressDto
 from repositories import address_repository
 from auth.users import current_active_user
 
@@ -14,6 +14,17 @@ async def create_address(request: CreateAddressDto, db: Session = Depends(get_as
     address = await address_repository.create_address(db, current_user, request)
     return address
 
+# Address Update
+@router.patch("/update", response_model=AddressDisplayDto)
+async def update_address(request: CreateAddressDto, db: Session = Depends(get_async_session), current_user: User = Depends(current_active_user)):
+    address = await address_repository.update_address(db, current_user, request)
+    return address
+
+# 내 주소지 조회(리스트)
+@router.get("/", response_model=AddressListDisplayDto)
+async def query_profile(db: Session = Depends(get_async_session), current_user: User = Depends(current_active_user)):
+    address = await address_repository.my_address_list(db, current_user)
+    return address
 
 # User Query (One)
 # @router.get("/{id}", response_model=AddressDisplayDto)

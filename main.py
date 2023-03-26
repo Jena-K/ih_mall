@@ -51,7 +51,7 @@ app.include_router(
 )
 app.include_router(kakao_oauth_router, prefix="/auth/kakao", tags=["auth"])
 app.include_router(naver_oauth_router, prefix="/auth/naver", tags=["auth"])
-app.include_router(api_router, prefix="/profile", tags=["profile"])
+app.include_router(api_router)
 
 @app.get("/authenticated-route")
 async def authenticated_route(user: User = Depends(current_active_user)):

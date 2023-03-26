@@ -27,57 +27,39 @@ async def create_address(db: AsyncSession, current_user: User, request: Optional
     
     return new_address
 
+async def update_address(db: AsyncSession, current_user: User, request: Optional[CreateAddressDto] = None):
+    address = await db.execute(
+        select(Address)
+        .options(selectinload(Address.user))
+        .where(Address.user_id == current_user.id)
+        .where(Address.id == request.id)
+    )
+    address = address.scalar_one_or_none()
 
-
-# async def create_profile(db: AsyncSession, current_user: User, request: Optional[RegisterProfileDto] = None):
-
-#     new_profile = Profile(
-#         email=current_user.email,
-#         user_id=current_user.id,
-#         provider=current_user.oauth_accounts[0].oauth_name,
-#         phone=request.phone,
-#         name=request.name
-#     )
-
-#     db.add(new_profile)
-#     await db.commit()
-#     await db.refresh(new_profile)
-
-#     return new_profile
-
-
-# async def update_profile(db: AsyncSession, current_user: User, request: Optional[UpdateProfileDto] = None):
-
-#     profile = await db.execute(
-#         select(Profile)
-#         .options(selectinload(Profile.user))
-#         .where(Profile.user_id == current_user.id)
-#     )
-#     profile = profile.scalar_one_or_none()
-
-#     if profile is None:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profile not found")
+    if address is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Address not found")
 
     
-#     for key, value in request:
-#         if value is not None:
-#             setattr(profile, key, value)
+    for key, value in request:
+        if value is not None:
+            setattr(address, key, value)
     
-#     await db.commit()
-#     await db.refresh(profile)
+    await db.commit()
+    await db.refresh(address)
     
-#     return profile
+    return address
 
-# async def my_profile(db: AsyncSession, current_user: User):
-    
-#     profile = await db.execute(
-#         select(Profile)
-#         .options(selectinload(Profile.user))
-#         .where(Profile.user_id == current_user.id)
-#     )
-    
-#     profile = profile.scalar_one_or_none()
 
-#     if profile is None:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profile not found")
-#     return profile
+async def my_address_list(db: AsyncSession, current_user: User):
+    
+    address = await db.execute(
+        select(Address)
+        .options(selectinload(Address.user))
+        .where(Address.user_id == current_user.id)
+    )
+    
+    address = address.scalar_one_or_none()
+
+    if address is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Address not found")
+    return address

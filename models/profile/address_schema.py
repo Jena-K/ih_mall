@@ -14,3 +14,8 @@ class AddressDisplayDto(AddressBaseDto):
     
     class Config:
         orm_mode = True
+
+class AddressListDisplayDto(AddressDisplayDto):
+
+    class Config:
+        orm_mode = True
