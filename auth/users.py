@@ -12,10 +12,11 @@ from fastapi_users.authentication import (
 from fastapi_users.db import SQLAlchemyUserDatabase
 from httpx_oauth.clients.google import GoogleOAuth2
 from app.db import create_db_and_tables
-from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.database import User, get_async_session, get_user_db
 from models.profile.profile_model import Profile
-from infrastructure.database import async_session_maker
+from sqlalchemy.orm.session import Session
+
+
 SECRET = "SECRET"
 
 google_oauth_client = GoogleOAuth2(
@@ -29,18 +30,6 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     verification_token_secret = SECRET
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-        new_profile = Profile(
-            email = user.email,
-        )
-        print(new_profile.email)
-        
-        # 프로필을 데이터베이스에 생성
-        db = async_session_maker()
-        db.add(new_profile)
-        db.commit()
-        
-
-        
         
         print(f"User {user.id} has registered.")
 
@@ -75,3 +64,4 @@ auth_backend = AuthenticationBackend(
 fastapi_users = FastAPIUsers[User, uuid.UUID](get_user_manager, [auth_backend])
 
 current_active_user = fastapi_users.current_user(active=True)
+

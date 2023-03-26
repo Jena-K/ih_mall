@@ -1,15 +1,16 @@
 from typing import Optional
 from pydantic import BaseModel
 
-from models.user.base_schema import AddressBaseDto, UserBaseDto
-from models.user.user_model import User
+from models.profile.base_schema import AddressBaseDto, UserBaseDto
+from models.profile.profile_model import User
 
 
 # UserDto for Address
 class UserDto(BaseModel):
-    name: str
+    name: Optional[str]
     phone: Optional[str]
-    email: str
+    email: Optional[str]
+    user_id: Optional[str]
 
     class Config:
         orm_mode = True

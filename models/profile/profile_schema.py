@@ -1,26 +1,23 @@
 from typing import List, Optional
-from models.user.base_schema import UserBaseDto
+from models.profile.base_schema import ProfileBaseDto
 from pydantic import BaseModel
 
 
-class RegisterUserDto(UserBaseDto):
-    password: str
+class RegisterProfileDto(ProfileBaseDto):
     phone: str
     name: str
 
 
-class ResponseRegisterUserDto(BaseModel):
+class ResponseRegisterProfileDto(BaseModel):
     email: Optional[str]
+    phone: Optional[str]
     provider: Optional[str]
 
     class Config:
         orm_mode = True
 
 
-class UpdateUserDto(BaseModel):
-    email: Optional[str]
-    provider: Optional[str]
-    password: Optional[str]
+class UpdateProfileDto(BaseModel):
     phone: Optional[str]
     name: Optional[str]
 
@@ -37,16 +34,16 @@ class AddressDto(BaseModel):
         orm_mode = True
 
 
-class UserDisplayDto(UserBaseDto):
+class ProfileDisplayDto(ProfileBaseDto):
     phone: Optional[str]
-    name: str
-    address: List[AddressDto]
+    name: Optional[str]
+    # address: List[AddressDto]
 
     class Config:
         orm_mode = True
 
 
-class LoginUserDto(UserBaseDto):
+class LoginProfileDto(ProfileBaseDto):
     password: str
 
 

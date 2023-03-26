@@ -1,10 +1,9 @@
 import sqlalchemy
 from sqlalchemy import Column
-from sqlalchemy.sql.sqltypes import Integer, String, Enum, DateTime, Boolean
+from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from infrastructure.database import Base
 from sqlalchemy.schema import ForeignKey
-from models.profile.profile_model import Profile
 
 
 class Address(Base):

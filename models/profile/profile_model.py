@@ -2,7 +2,6 @@ import sqlalchemy
 from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import Integer, String, Enum, DateTime, Boolean, UUID
 from infrastructure.database import Base
-from sqlalchemy.orm import DeclarativeBase
 from models.enums import RoleType
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey

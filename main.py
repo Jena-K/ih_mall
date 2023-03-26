@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from infrastructure.database import create_db_and_tables, engine, User
 from models import models
-# from routes.routes import api_router
+from routes.routes import api_router
 from starlette.middleware.sessions import SessionMiddleware
 from auth.kakao_login import kakao_oauth_router
 from auth.naver_login import naver_oauth_router
@@ -51,7 +51,7 @@ app.include_router(
 )
 app.include_router(kakao_oauth_router, prefix="/auth/kakao", tags=["auth"])
 app.include_router(naver_oauth_router, prefix="/auth/naver", tags=["auth"])
-
+app.include_router(api_router, prefix="/profile", tags=["profile"])
 
 @app.get("/authenticated-route")
 async def authenticated_route(user: User = Depends(current_active_user)):

@@ -2,9 +2,8 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class UserBaseDto(BaseModel):
-    email: str
-    provider: str
+class ProfileBaseDto(BaseModel):
+    
     class Config:
         orm_mode = True
 

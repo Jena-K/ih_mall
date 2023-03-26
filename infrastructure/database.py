@@ -12,6 +12,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, relationship
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 environment = os.environ.get('ENVIRONMENT')
@@ -49,6 +50,7 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
     oauth_accounts: Mapped[List[OAuthAccount]] = relationship(
         "OAuthAccount", lazy="joined"
     )
+    
     
 
 engine = create_async_engine(DATABASE_URL)
