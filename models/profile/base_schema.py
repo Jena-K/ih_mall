@@ -15,3 +15,6 @@ class AddressBaseDto(BaseModel):
     receiver_name: str
     phone: str
     is_default: Optional[bool]
+
+    class Config:
+        orm_mode = True

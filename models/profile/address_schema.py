@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from pydantic import BaseModel
 
 from models.profile.base_schema import AddressBaseDto
@@ -15,10 +15,6 @@ class AddressDisplayDto(AddressBaseDto):
     class Config:
         orm_mode = True
 
-class AddressListDisplayDto(AddressDisplayDto):
-
-    class Config:
-        orm_mode = True
 
 class RequestMyAddressDto(BaseModel):
     id: Optional[int]

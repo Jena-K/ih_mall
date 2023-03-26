@@ -65,16 +65,20 @@ async def my_address(db: AsyncSession, current_user: User, request: Optional[Req
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Address not found")
     return address
 
-# async def my_address_list(db: AsyncSession, current_user: User):
+async def my_address_list(db: AsyncSession, current_user: User):
     
-#     address = await db.execute(
-#         select(Address)
-#         .options(selectinload(Address.user))
-#         .where(Address.user_id == current_user.id)
-#     )
+    address = await db.execute(
+        select(Address)
+        .options(selectinload(Address.user))
+        .where(Address.user_id == current_user.id)
+    )
     
-#     address = address.scalar_one_or_none()
-
-#     if address is None:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Address not found")
-#     return address
+    address_list = address.scalars()
+    
+    if address_list is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Address not found")
+    
+    else:
+        addresses = [address for address in address_list]
+    
+    return addresses
