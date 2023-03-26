@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy import Column
-from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
+from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, UUID
 from sqlalchemy.orm import relationship
 from infrastructure.database import Base
 from sqlalchemy.schema import ForeignKey
@@ -9,8 +9,8 @@ from sqlalchemy.schema import ForeignKey
 class Address(Base):
     __tablename__ = "address_table"
     id = Column(Integer, primary_key=True, index=True)
-    profile_id = Column(Integer, ForeignKey("profile_table.id"))
-    profile = relationship("Profile", back_populates="address")
+    user_id = Column(UUID, ForeignKey("user.id"))
+    user = relationship("User", backref="address", primaryjoin="User.id == Address.user_id")
     address = Column(String)
     detailed_address = Column(String)
     receiver_name = Column(String)

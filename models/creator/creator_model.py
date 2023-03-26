@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import Column
+from sqlalchemy import UUID, Column
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from sqlalchemy.schema import ForeignKey
 from infrastructure.database import Base
@@ -9,7 +9,6 @@ from sqlalchemy.orm import relationship
 class Creator(Base):
     __tablename__ = "creator_table"
     id = Column(Integer, primary_key=True, index=True)
-    profile_id = Column(Integer, ForeignKey("profile_table.id"))
     nickname = Column(String)
     phone = Column(String)
     businessNumber = Column(String)
@@ -20,7 +19,8 @@ class Creator(Base):
     address = Column(String)
     sns = Column(String)
     is_certified = Column(Boolean, default=False)
-    profile = relationship("Profile", back_populates="creator")
+    user_id = Column(UUID, ForeignKey("user.id"))
+    user = relationship("User", backref="creator", primaryjoin="User.id == Creator.user_id")
     products = relationship("Product", back_populates="creator")
     materials = relationship("Material", back_populates="creator")
     created_at = Column(

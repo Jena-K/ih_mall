@@ -9,6 +9,7 @@ class ProfileBaseDto(BaseModel):
 
 
 class AddressBaseDto(BaseModel):
+    id: Optional[int]
     address: str
     detailed_address: str
     receiver_name: str

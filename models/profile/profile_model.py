@@ -17,8 +17,6 @@ class Profile(Base):
     provider = Column(String)
     user_id = Column(UUID, ForeignKey("user.id"))
     user = relationship("User", backref="profile", primaryjoin="User.id == Profile.user_id")
-    address = relationship("Address", back_populates="profile")
-    creator = relationship("Creator", back_populates="profile")
     created_at = Column(
         DateTime,
         nullable=False,
