@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.database import User, get_user_db
 from auth.users import current_active_user
 from models.profile.address_model import Address
-from models.profile.address_schema import CreateAddressDto, AddressDisplayDto
+from models.profile.address_schema import CreateAddressDto, AddressDisplayDto, RequestMyAddressDto
 
 
 from sqlalchemy.orm import selectinload
@@ -50,12 +50,13 @@ async def update_address(db: AsyncSession, current_user: User, request: Optional
     return address
 
 
-async def my_address_list(db: AsyncSession, current_user: User):
+async def my_address(db: AsyncSession, current_user: User, request: Optional[RequestMyAddressDto]):
     
     address = await db.execute(
         select(Address)
         .options(selectinload(Address.user))
         .where(Address.user_id == current_user.id)
+        .where(Address.id == request.id)
     )
     
     address = address.scalar_one_or_none()
@@ -63,3 +64,17 @@ async def my_address_list(db: AsyncSession, current_user: User):
     if address is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Address not found")
     return address
+
+# async def my_address_list(db: AsyncSession, current_user: User):
+    
+#     address = await db.execute(
+#         select(Address)
+#         .options(selectinload(Address.user))
+#         .where(Address.user_id == current_user.id)
+#     )
+    
+#     address = address.scalar_one_or_none()
+
+#     if address is None:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Address not found")
+#     return address

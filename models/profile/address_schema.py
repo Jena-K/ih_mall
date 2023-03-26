@@ -19,3 +19,6 @@ class AddressListDisplayDto(AddressDisplayDto):
 
     class Config:
         orm_mode = True
+
+class RequestMyAddressDto(BaseModel):
+    id: Optional[int]
