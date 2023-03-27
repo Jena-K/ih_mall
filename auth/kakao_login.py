@@ -7,7 +7,20 @@ from httpx_oauth.typing import TypedDict
 from fastapi_users.authentication import AuthenticationBackend
 from auth.users import bearer_transport, get_jwt_strategy
 from auth.users import fastapi_users
-    
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+environment = os.environ.get('ENVIRONMENT')
+
+redirect_url = None
+
+if environment == 'production':
+    redirect_url = os.environ.get('HEROKU_REDIRECT_URL')
+else:
+    redirect_url = os.environ.get('LOCAL_REDIRECT_URL')
 
 AUTHORIZE_ENDPOINT = "https://kauth.kakao.com/oauth/authorize"
 ACCESS_TOKEN_ENDPOINT = "https://kauth.kakao.com/oauth/token"
@@ -78,6 +91,6 @@ kakao_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=kakao_oauth_client,
     backend=auth_backend_kakao,
     state_secret="abcdefg1234",
-    redirect_url="http://127.0.0.1:8000/auth/kakao/callback",
+    redirect_url=f"{redirect_url}/auth/kakao/callback",
     associate_by_email=True,
 )

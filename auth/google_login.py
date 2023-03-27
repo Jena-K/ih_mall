@@ -9,6 +9,21 @@ from auth.users import bearer_transport, get_jwt_strategy
 from auth.users import fastapi_users
 from app.exceptions import BadCredentialException
 from httpx_oauth.clients.google import GoogleOAuth2
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+environment = os.environ.get('ENVIRONMENT')
+
+redirect_url = None
+
+if environment == 'production':
+    redirect_url = os.environ.get('HEROKU_REDIRECT_URL')
+else:
+    redirect_url = os.environ.get('LOCAL_REDIRECT_URL')
+    
     
 GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
 GOOGLE_SCOPE_PROFILE = "https://www.googleapis.com/auth/userinfo.profile"
@@ -54,6 +69,6 @@ google_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=google_oauth_client,
     backend=auth_backend,
     state_secret="abcdefg1234",
-    redirect_url="http://127.0.0.1:8000/auth/google/callback",
+    redirect_url=f"{redirect_url}/auth/google/callback",
     associate_by_email=True,
 )

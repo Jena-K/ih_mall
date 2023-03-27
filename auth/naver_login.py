@@ -8,7 +8,20 @@ from fastapi_users.authentication import AuthenticationBackend
 from auth.users import bearer_transport, get_jwt_strategy
 from auth.users import fastapi_users
 from models.profile.profile_model import Profile
-    
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+environment = os.environ.get('ENVIRONMENT')
+
+redirect_url = None
+
+if environment == 'production':
+    redirect_url = os.environ.get('HEROKU_REDIRECT_URL')
+else:
+    redirect_url = os.environ.get('LOCAL_REDIRECT_URL')
 
 NAVER_USERINFO_URL = 'https://openapi.naver.com/v1/nid/me'
 AUTHORIZE_ENDPOINT = "https://nid.naver.com/oauth2.0/authorize"
@@ -85,6 +98,6 @@ naver_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=naver_oauth_client,
     backend=auth_backend,
     state_secret="abcdefg1234",
-    redirect_url="http://127.0.0.1:8000/auth/naver/callback",
+    redirect_url=f"{redirect_url}/auth/naver/callback",
     associate_by_email=True,
 )
