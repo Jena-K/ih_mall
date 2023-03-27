@@ -1,0 +1,1 @@
+web: gunicorn main:app --preload --chdir "/" -b "0.0.0.0:$PORT" -k uvicorn.workers.UvicornWorker
