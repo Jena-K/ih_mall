@@ -1,11 +1,11 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
-class CreateCategory(BaseModel):
+class CreateCategoryDto(BaseModel):
     name: str
     url: str
 
-class ResponseCreateCategory(BaseModel):
+class ResponseCreateCategoryDto(BaseModel):
     id: int
     name: str
     url: str
@@ -13,8 +13,10 @@ class ResponseCreateCategory(BaseModel):
     class Config:
         orm_mode = True
 
-
-class UpdateUserDto(BaseModel):
-    password: Optional[str]
-    phone: Optional[str]
+class UpdateCategoryDto(BaseModel):
+    id: int
     name: Optional[str]
+    url: Optional[str]
+
+class GetCategoryDto(BaseModel):
+    id: int
