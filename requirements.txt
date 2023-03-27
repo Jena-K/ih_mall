@@ -2,7 +2,6 @@ aiosqlite==0.18.0
 anyio==3.6.2
 async-exit-stack==1.0.1
 asyncpg==0.27.0
-backports.zoneinfo==0.2.1
 bcrypt==4.0.1
 certifi==2022.12.7
 cffi==1.15.1
