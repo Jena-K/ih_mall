@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, Field
 
 
@@ -29,3 +30,15 @@ class CreateResponseCreatorDto(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UpdateCreatorDto(BaseModel):
+    nickname: Optional[str] = Field(title="작가 닉네임")
+    phone: Optional[str] = Field(title="작가 전화번호")
+    businessNumber: Optional[str] = Field(title="사업자 번호")
+    businessName: Optional[str] = Field(title="사업자 이름")
+    representative: Optional[str] = Field(title="대표자 명")
+    representativeType: Optional[str] = Field(title="대표자 유형")
+    businessRegistrationCertification: Optional[str] = Field(title="사업자 등록증")
+    address: Optional[str] = Field(title="작가 주소")
+    sns: Optional[str] = Field(title="작가 sns")
