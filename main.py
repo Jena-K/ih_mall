@@ -17,7 +17,7 @@ from auth.users import (
     google_oauth_client,
 )
 
-origins = ["http://localhost", "http://localhost:8000", "http://127.0.0.1:8000", "http://127.0.0.1", "http://127.0.0.1:8788", "http://localhost:8788", "https://ieunghieut-frontend.pages.dev"]
+origins = ["https://quiet-dawn-85341.herokuapp.com", "http://localhost", "http://localhost:8000", "http://127.0.0.1:8000", "http://127.0.0.1", "http://127.0.0.1:8788", "http://localhost:8788", "https://ieunghieut-frontend.pages.dev"]
 
 app = FastAPI()
 # app.include_router(api_router)
