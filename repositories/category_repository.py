@@ -49,11 +49,8 @@ async def update_category(db: AsyncSession, current_user: User, request: UpdateC
     return category
 
 # Get Single Cateogry
-async def get_category(db: AsyncSession, current_user: User, request: GetCategoryDto):
+async def get_category(db: AsyncSession, request: GetCategoryDto):
 
-    if current_user.is_superuser is False:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unauthorized")
-    
     category = await db.execute(
         select(Category)
         .where(Category.id == request.id)
@@ -66,10 +63,7 @@ async def get_category(db: AsyncSession, current_user: User, request: GetCategor
     return category
 
 # Get Cateogry List
-async def get_category_list(db: AsyncSession, current_user: User):
-
-    if current_user.is_superuser is False:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unauthorized")
+async def get_category_list(db: AsyncSession):
     
     category = await db.execute(
         select(Category)

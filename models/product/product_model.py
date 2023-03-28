@@ -23,7 +23,7 @@ class Product(Base):
     status = Column(Enum(ProductStatus), nullable=False, server_default=ProductStatus.pending.name)
     price = Column(Integer)
     discounted_price = Column(Integer)
-    stock = Column(Integer)
+    stock = Column(Integer, default=0)
     ordering_number = Column(Integer)
     material_id = Column(Integer, ForeignKey("material_table.id"))
     material = relationship("Material", back_populates="products")
