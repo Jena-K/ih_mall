@@ -42,3 +42,7 @@ class UpdateCreatorDto(BaseModel):
     businessRegistrationCertification: Optional[str] = Field(title="사업자 등록증")
     address: Optional[str] = Field(title="작가 주소")
     sns: Optional[str] = Field(title="작가 sns")
+
+
+class GetCreatorDto(BaseModel):
+    id: int

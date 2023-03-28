@@ -1,8 +1,7 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
-class CreateMaterial(BaseModel):
-    creator_id: int
+class CreateMaterialDto(BaseModel):
     name: str
     material: str
     coating: str
@@ -10,7 +9,7 @@ class CreateMaterial(BaseModel):
     origin: str
     caution: str
 
-class ResponseCreateMaterial(BaseModel):
+class ResponseCreateMaterialDto(BaseModel):
     id: int
     creator_id: int
     name: str
@@ -22,3 +21,12 @@ class ResponseCreateMaterial(BaseModel):
 
     class Config:
         orm_mode = True
+
+class UpdateMaterialDto(BaseModel):
+    id: int
+    name: Optional[str]
+    material: Optional[str]
+    coating: Optional[str]
+    size: Optional[str]
+    origin: Optional[str]
+    caution: Optional[str]
