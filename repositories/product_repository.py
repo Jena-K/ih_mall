@@ -6,9 +6,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.database import User, get_user_db
 from auth.users import current_active_user
 from models.creator.creator_model import Creator
+from models.product.material_model import Material
+from models.product.option_model import Option
 from models.product.product_model import Product
-from sqlalchemy.orm import selectinload
-from models.product.product_schema import CreateProductDto, UpdateProductDto
+from sqlalchemy.orm import selectinload, joinedload
+from models.product.product_schema import CreateProductDto, OptionDto, ProductImageDto, ResponseCreateProductDto, UpdateProductDto
+
 
 async def create_product(db: AsyncSession, current_user: User, request: Optional[CreateProductDto] = None):
     
@@ -20,17 +23,17 @@ async def create_product(db: AsyncSession, current_user: User, request: Optional
 
     creator = creator.scalar_one_or_none()
     
-
-    products = await db.execute(
-        select(Product)
-        .options(selectinload(Product.creator))
-        .where(Product.creator_id == creator.id)
-    )
-
-    products = products.scalars()
-    products = [product for product in products]
+    try:
+        products = await db.execute(
+            select(Product)
+            .options(selectinload(Product.creator))
+            .where(Product.creator_id == creator.id)
+        )
+        products = products.scalars()
+        products = [product for product in products]
+    except:
+        products = 0
     
-
     new_product = Product(
         category_id=request.category_id,
         creator_id=creator.id,
@@ -46,6 +49,12 @@ async def create_product(db: AsyncSession, current_user: User, request: Optional
     db.add(new_product)
     await db.commit()
     await db.refresh(new_product)
+
+    try:
+        new_product.material_id = request.material_id
+        await db.commit()
+    except:
+        return new_product
     
     return new_product
 
@@ -62,7 +71,6 @@ async def update_product(db: AsyncSession, current_user: User, request: Optional
 
     if creator.user_id is not current_user.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Authorized")
-
 
     product = await db.execute(
         select(Product)
@@ -86,17 +94,14 @@ async def update_product(db: AsyncSession, current_user: User, request: Optional
 
 # Get Product (Single)
 async def get_product(db: AsyncSession, request: Optional[UpdateProductDto]):
-
-    product = await db.execute(
-        select(Product)
-        .where(Product.id == request.id)
-    )
-
-    product = product.scalar_one_or_none()
-
+    query = select(Product).where(Product.id == request.id)
+    result = await db.execute(query)
+    product = result.scalars().first()
 
     if product is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+    
+
     return product
 
 

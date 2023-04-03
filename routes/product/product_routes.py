@@ -26,7 +26,7 @@ async def update_address(request: UpdateProductDto, db: Session = Depends(get_as
     product = await product_repository.get_product(db, request)
     return product
 
-# # Get Product List
+# Get Product List
 @router.get("/product_all", response_model=List[ResponseCreateProductDto])
 async def update_address(db: Session = Depends(get_async_session)):
     products = await product_repository.get_products(db)

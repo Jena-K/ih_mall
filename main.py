@@ -44,6 +44,10 @@ app.include_router(
     prefix="/users",
     tags=["users"],
 )
+
+app.include_router(api_router)
+
+# 소셜로그인 라우터
 app.include_router(
     fastapi_users.get_oauth_router(google_oauth_client, auth_backend, SECRET),
     prefix="/auth/google",
@@ -51,7 +55,6 @@ app.include_router(
 )
 app.include_router(kakao_oauth_router, prefix="/auth/kakao", tags=["auth"])
 app.include_router(naver_oauth_router, prefix="/auth/naver", tags=["auth"])
-app.include_router(api_router)
 
 @app.get("/authenticated-route")
 async def authenticated_route(user: User = Depends(current_active_user)):

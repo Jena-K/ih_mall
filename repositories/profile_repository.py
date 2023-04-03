@@ -39,7 +39,6 @@ async def update_profile(db: AsyncSession, current_user: User, request: Optional
     if profile is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profile not found")
 
-    
     for key, value in request:
         if value is not None:
             setattr(profile, key, value)

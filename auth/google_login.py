@@ -64,11 +64,13 @@ google_oauth_client = GoogleOAuth2(
         GOOGLE_SCOPE_PROFILE, GOOGLE_SCOPE_EMAIL, "openid"
     ],
 )
-
+# redirect_url=f"{redirect_url}/auth/google/callback",
 google_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=google_oauth_client,
     backend=auth_backend,
     state_secret="abcdefg1234",
-    redirect_url=f"{redirect_url}/auth/google/callback",
+    redirect_url="https://ieunghieut-frontend.pages.dev/login/google",
     associate_by_email=True,
 )
+
+

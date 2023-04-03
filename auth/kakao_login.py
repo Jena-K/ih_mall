@@ -91,6 +91,7 @@ kakao_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=kakao_oauth_client,
     backend=auth_backend_kakao,
     state_secret="abcdefg1234",
-    redirect_url=f"{redirect_url}/auth/kakao/callback",
+    redirect_url=f"https://ieunghieut-frontend.pages.dev/auth/kakao/callback",
     associate_by_email=True,
 )
+# redirect_url=f"{redirect_url}/auth/kakao/callback",

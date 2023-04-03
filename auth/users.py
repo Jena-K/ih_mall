@@ -2,7 +2,7 @@ import os
 import uuid
 from typing import Optional
 
-from fastapi import Depends, Request
+from fastapi import Depends, Request, status
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
 from fastapi_users.authentication import (
     AuthenticationBackend,
@@ -15,7 +15,8 @@ from app.db import create_db_and_tables
 from infrastructure.database import User, get_async_session, get_user_db
 from models.profile.profile_model import Profile
 from sqlalchemy.orm.session import Session
-
+from fastapi.responses import RedirectResponse
+from starlette.datastructures import URL
 
 SECRET = "SECRET"
 
@@ -32,6 +33,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         
         print(f"User {user.id} has registered.")
+        
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None
@@ -42,7 +44,15 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         self, user: User, token: str, request: Optional[Request] = None
     ):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
-
+    
+    async def on_after_login(
+        self, user:User, token: str, request: Optional[Request] = None
+    ):
+        print(f"Login user {user.id}. successed token: {token}")
+        # redirect_url = URL(request.url_for('/')).include_query_params(msg="Succesfully created!")
+        # return RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
+        # return RedirectResponse(url="/", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+# , headers={"access_token": token, "token_type": "bearer"}
 
 async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):
     yield UserManager(user_db)
