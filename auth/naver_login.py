@@ -98,6 +98,6 @@ naver_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=naver_oauth_client,
     backend=auth_backend,
     state_secret="abcdefg1234",
-    redirect_url=f"{redirect_url}/auth/naver/callback",
+    redirect_url=f"https://ieunghieut-frontend.pages.dev/login/naver",
     associate_by_email=True,
 )

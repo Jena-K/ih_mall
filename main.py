@@ -8,6 +8,7 @@ from routes.routes import api_router
 from starlette.middleware.sessions import SessionMiddleware
 from auth.kakao_login import kakao_oauth_router
 from auth.naver_login import naver_oauth_router
+from auth.google_login import google_oauth_router
 from app.schemas import UserCreate, UserRead, UserUpdate
 from auth.users import (
     SECRET,
@@ -48,11 +49,12 @@ app.include_router(
 app.include_router(api_router)
 
 # 소셜로그인 라우터
-app.include_router(
-    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, SECRET),
-    prefix="/auth/google",
-    tags=["auth"],
-)
+# app.include_router(
+#     fastapi_users.get_oauth_router(google_oauth_client, auth_backend, SECRET),
+#     prefix="/auth/google",
+#     tags=["auth"],
+# )
+app.include_router(google_oauth_router, prefix="/auth/google", tags=["auth"])
 app.include_router(kakao_oauth_router, prefix="/auth/kakao", tags=["auth"])
 app.include_router(naver_oauth_router, prefix="/auth/naver", tags=["auth"])
 

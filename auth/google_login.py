@@ -1,14 +1,12 @@
 from typing import Any, Dict, List, Optional, Tuple, cast
-import requests
+
+import json
 from httpx_oauth.errors import GetIdEmailError
 from httpx_oauth.oauth2 import BaseOAuth2
 from httpx_oauth.typing import TypedDict
 from fastapi_users.authentication import AuthenticationBackend
-from infrastructure.database import User
 from auth.users import bearer_transport, get_jwt_strategy
 from auth.users import fastapi_users
-from app.exceptions import BadCredentialException
-from httpx_oauth.clients.google import GoogleOAuth2
 import os
 from dotenv import load_dotenv
 
@@ -23,54 +21,73 @@ if environment == 'production':
     redirect_url = os.environ.get('HEROKU_REDIRECT_URL')
 else:
     redirect_url = os.environ.get('LOCAL_REDIRECT_URL')
-    
-    
+
 GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
 GOOGLE_SCOPE_PROFILE = "https://www.googleapis.com/auth/userinfo.profile"
 GOOGLE_SCOPE_EMAIL = "https://www.googleapis.com/auth/userinfo.email"
+BASE_PROFILE_SCOPES = [GOOGLE_SCOPE_PROFILE, GOOGLE_SCOPE_EMAIL, "openid"]
 
+# 카카오로그인 시작
+class GoogleOAuth2(BaseOAuth2[Dict[str, Any]]):
+    display_name = "Google"
 
+    def __init__(
+        self,
+        client_id: str,
+        client_secret: str,
+        scopes: Optional[List[str]] = [GOOGLE_SCOPE_PROFILE, GOOGLE_SCOPE_EMAIL, "openid"],
+        name: str = "google",
+    ):
+        super().__init__(
+            client_id,
+            client_secret,
+            "https://accounts.google.com/o/oauth2/v2/auth",
+            "https://oauth2.googleapis.com/token",
+            name=name,
+            base_scopes=scopes,
+        )
 
-class GoogleAuthBackend(BaseOAuth2[Dict[str, Any]]):
-    def get_profile(self, access_token: str) -> dict:
-        response = requests.get(url=GOOGLE_USERINFO_URL,
-                                params={'access_token': access_token})
-        if not response.ok:
-            raise BadCredentialException(
-                'Failed to get user information from Google.')
-        return response.json()
+    async def get_id_email(self, token: str) -> Tuple[str, Optional[str]]:
+        async with self.get_httpx_client() as client:
+            response = await client.post(
+                GOOGLE_USERINFO_URL,
+                params={"property_keys": json.dumps(BASE_PROFILE_SCOPES)},
+                headers={**self.request_headers,
+                         "Authorization": f"Bearer {token}"},
+            )
 
-    def update_profile(self, user: User, profile: dict) -> User:
-        user = super().update_profile(user, profile)
-        if user.first_name == None:
-            user.first_name = profile.get('given_name')
-        if user.last_name == None:
-            user.last_name = profile.get('family_name')
-        if user.picture == None:
-            user.picture = profile.get('picture')
-        return user
+            if response.status_code >= 400:
+                raise GetIdEmailError(response.json())
 
+            account_info = cast(Dict[str, Any], response.json())
+            google_account = account_info.get('google_account')
 
-auth_backend = GoogleAuthBackend(
+            return str(account_info.get('id')), google_account.get('email')
+
+# 카카오로그인 끝
+
+auth_backend_google = AuthenticationBackend(
     name="jwt-google",
     transport=bearer_transport,
-    get_strategy=get_jwt_strategy,
+    get_strategy=get_jwt_strategy
 )
 
+# 인증 클라이언트
 google_oauth_client = GoogleOAuth2(
     client_id="227870507429-7pvpqe2tk9392fs7p4r14pb4sr9j4ghb.apps.googleusercontent.com",
     client_secret="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",
-    scope=[
+    scopes=[
         GOOGLE_SCOPE_PROFILE, GOOGLE_SCOPE_EMAIL, "openid"
-    ],
+    ]
 )
-# redirect_url=f"{redirect_url}/auth/google/callback",
+
+
+# 카카오 로그인 JWT 라우터
 google_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=google_oauth_client,
-    backend=auth_backend,
+    backend=auth_backend_google,
     state_secret="abcdefg1234",
-    redirect_url="https://ieunghieut-frontend.pages.dev/login/google",
+    redirect_url=f"https://ieunghieut-frontend.pages.dev/auth/google/callback",
     associate_by_email=True,
 )
-
-
+# redirect_url=f"{redirect_url}/auth/google/callback",
