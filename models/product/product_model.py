@@ -28,7 +28,6 @@ class Product(Base):
     material_id = Column(Integer, ForeignKey("material_table.id"))
     material = relationship("Material", back_populates="products")
     options = relationship("Option", back_populates="product")
-    keywords = relationship("Keyword", back_populates="products")
     product_images = relationship("ProductImage", back_populates="product")
     is_handmade = Column(Boolean, default=False)
     is_recommanded = Column(Boolean, default=False)
