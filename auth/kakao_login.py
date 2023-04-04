@@ -18,9 +18,9 @@ environment = os.environ.get('ENVIRONMENT')
 redirect_url = None
 
 if environment == 'production':
-    redirect_url = os.environ.get('HEROKU_REDIRECT_URL')
+    redirect_url = "https://ieunghieut-frontend.pages.dev/auth/kakao/callback"
 else:
-    redirect_url = os.environ.get('LOCAL_REDIRECT_URL')
+    redirect_url = f"http://127.0.0.1:8000/auth/kakao/callback"
 
 AUTHORIZE_ENDPOINT = "https://kauth.kakao.com/oauth/authorize"
 ACCESS_TOKEN_ENDPOINT = "https://kauth.kakao.com/oauth/token"
@@ -63,6 +63,7 @@ class KakaoOAuth2(BaseOAuth2[Dict[str, Any]]):
 
             account_info = cast(Dict[str, Any], response.json())
             kakao_account = account_info.get('kakao_account')
+            print(kakao_account)
 
             return str(account_info.get('id')), kakao_account.get('email')
 
@@ -91,7 +92,6 @@ kakao_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=kakao_oauth_client,
     backend=auth_backend_kakao,
     state_secret="abcdefg1234",
-    redirect_url=f"https://ieunghieut-frontend.pages.dev/auth/kakao/callback",
+    redirect_url=redirect_url,
     associate_by_email=True,
 )
-# redirect_url=f"{redirect_url}/auth/kakao/callback",

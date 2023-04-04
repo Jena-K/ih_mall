@@ -18,9 +18,9 @@ environment = os.environ.get('ENVIRONMENT')
 redirect_url = None
 
 if environment == 'production':
-    redirect_url = os.environ.get('HEROKU_REDIRECT_URL')
+    redirect_url = "https://ieunghieut-frontend.pages.dev/auth/google/callback"
 else:
-    redirect_url = os.environ.get('LOCAL_REDIRECT_URL')
+    redirect_url = f"http://127.0.0.1:8000/auth/google/callback"
 
 GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
 GOOGLE_SCOPE_PROFILE = "https://www.googleapis.com/auth/userinfo.profile"
@@ -60,9 +60,11 @@ class GoogleOAuth2(BaseOAuth2[Dict[str, Any]]):
                 raise GetIdEmailError(response.json())
 
             account_info = cast(Dict[str, Any], response.json())
+            print(f"account_info : {account_info}")
             google_account = account_info.get('google_account')
+            print(f"google_account: {google_account}")
 
-            return str(account_info.get('id')), google_account.get('email')
+            return str(account_info.get('id')), account_info.get('email')
 
 # 카카오로그인 끝
 
@@ -87,7 +89,7 @@ google_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=google_oauth_client,
     backend=auth_backend_google,
     state_secret="abcdefg1234",
-    redirect_url=f"https://ieunghieut-frontend.pages.dev/auth/google/callback",
+    redirect_url=redirect_url,
     associate_by_email=True,
 )
 # redirect_url=f"{redirect_url}/auth/google/callback",

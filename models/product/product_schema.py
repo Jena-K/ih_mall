@@ -5,6 +5,11 @@ from models.enums import ProductStatus
 from models.product.material_model import Material
 from models.product.product_model import Product
 
+class OptionDtoForCreateProductDto(BaseModel):
+    name: str
+    added_price: int
+    stock: int
+
 class CreateProductDto(BaseModel):
     category_id: int
     name: str
@@ -15,7 +20,7 @@ class CreateProductDto(BaseModel):
     material_id: Optional[int]
     product_images: Optional[List[int]]
     is_handmade: Optional[bool]
-    options: Optional[int]
+    options: Optional[List[OptionDtoForCreateProductDto]]
 
 class ProductImageDto(BaseModel):
     id: int

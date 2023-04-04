@@ -49,12 +49,26 @@ async def create_product(db: AsyncSession, current_user: User, request: Optional
     db.add(new_product)
     await db.commit()
     await db.refresh(new_product)
+    print(f"프로덕트아이디 : {new_product.id}")
 
-    try:
+    # 재질정보가 있는 경우 연결
+    if request.material_id:
         new_product.material_id = request.material_id
-        await db.commit()
-    except:
-        return new_product
+    
+    # 옵션정보가 있는 경우 연결
+    print(f"product : {new_product}")
+    if request.options:
+        for option in request.options:
+            new_option = Option(
+                name = option.name,
+                added_price = option.added_price,
+                stock = option.stock,
+                product_id = new_product.id
+            )
+            print(f"option : {new_option}")
+            db.add(new_option)
+    
+    await db.commit()
     
     return new_product
 

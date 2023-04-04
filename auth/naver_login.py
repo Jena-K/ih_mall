@@ -19,9 +19,9 @@ environment = os.environ.get('ENVIRONMENT')
 redirect_url = None
 
 if environment == 'production':
-    redirect_url = os.environ.get('HEROKU_REDIRECT_URL')
+    redirect_url = "https://ieunghieut-frontend.pages.dev/login/naver"
 else:
-    redirect_url = os.environ.get('LOCAL_REDIRECT_URL')
+    redirect_url = f"http://127.0.0.1:8000/auth/naver/callback"
 
 NAVER_USERINFO_URL = 'https://openapi.naver.com/v1/nid/me'
 AUTHORIZE_ENDPOINT = "https://nid.naver.com/oauth2.0/authorize"
@@ -67,7 +67,7 @@ class NaverOAuth2(BaseOAuth2[Dict[str, Any]]):
 
             account_info = cast(Dict[str, Any], response.json())
             account_info = account_info.get('response')
-
+            print(account_info)
             new_profile = Profile(
                 email = account_info.get('email'),
                 provider = "naver"
@@ -98,6 +98,6 @@ naver_oauth_router = fastapi_users.get_oauth_router(
     oauth_client=naver_oauth_client,
     backend=auth_backend,
     state_secret="abcdefg1234",
-    redirect_url=f"https://ieunghieut-frontend.pages.dev/login/naver",
+    redirect_url=redirect_url,
     associate_by_email=True,
 )
