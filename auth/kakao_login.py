@@ -18,7 +18,7 @@ environment = os.environ.get('ENVIRONMENT')
 redirect_url = None
 
 if environment == 'production':
-    redirect_url = "https://ieunghieut-frontend.pages.dev/login/callback"
+    redirect_url = "https://ieunghieut-frontend.pages.dev/login/kakao"
 else:
     redirect_url = f"http://127.0.0.1:8000/auth/kakao/callback"
 
