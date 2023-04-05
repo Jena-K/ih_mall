@@ -7,4 +7,4 @@ from models.product.category_model import Category
 from models.product.material_model import Material
 from models.product.product_model import Product
 from models.product.product_image_model import ProductImage
-# from models.product.keyword_model import Keyword
+from models.product.keyword_model import Keyword

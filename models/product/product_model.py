@@ -1,14 +1,14 @@
 import sqlalchemy
-from sqlalchemy import Column
+from sqlalchemy import Column, Table
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, Enum
 from sqlalchemy.schema import ForeignKey
 from infrastructure.database import Base
 from models.creator.creator_model import Creator
 from models.enums import ProductStatus
 from models.product.category_model import Category
-
 # from modules.product.domain.material import Material
 from sqlalchemy.orm import relationship
+from models.product.keyword_model import keyword_product
 
 
 class Product(Base):
@@ -31,6 +31,7 @@ class Product(Base):
     product_images = relationship("ProductImage", back_populates="product")
     is_handmade = Column(Boolean, default=False)
     is_recommanded = Column(Boolean, default=False)
+    keywords = relationship("Keyword", secondary=keyword_product, back_populates="products")
     created_at = Column(
         DateTime,
         nullable=False,
