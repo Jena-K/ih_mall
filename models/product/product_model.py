@@ -8,7 +8,6 @@ from models.enums import ProductStatus
 from models.product.category_model import Category
 # from modules.product.domain.material import Material
 from sqlalchemy.orm import relationship
-from models.product.keyword_model import keyword_product
 
 
 class Product(Base):
@@ -31,7 +30,9 @@ class Product(Base):
     product_images = relationship("ProductImage", back_populates="product")
     is_handmade = Column(Boolean, default=False)
     is_recommanded = Column(Boolean, default=False)
-    keywords = relationship("Keyword", secondary=keyword_product, back_populates="products")
+    keywords = relationship('KeywordProduct', back_populates='product')
+    like_id = Column(Integer, ForeignKey("like_table.id"))
+    likes = relationship('Like', back_populates='product')
     created_at = Column(
         DateTime,
         nullable=False,

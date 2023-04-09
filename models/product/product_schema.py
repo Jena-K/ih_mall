@@ -10,6 +10,9 @@ class OptionDtoForCreateProductDto(BaseModel):
     added_price: int
     stock: int
 
+class KeywordDtoForCreateProductDto(BaseModel):
+    name: str
+
 class CreateProductDto(BaseModel):
     category_id: int
     name: str
@@ -21,6 +24,7 @@ class CreateProductDto(BaseModel):
     product_images: Optional[List[int]]
     is_handmade: Optional[bool]
     options: Optional[List[OptionDtoForCreateProductDto]]
+    keywords: Optional[List[KeywordDtoForCreateProductDto]]
 
 class ProductImageDto(BaseModel):
     id: int

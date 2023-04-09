@@ -6,16 +6,18 @@ from infrastructure.database import Base
 # from modules.product.domain.material import Material
 from sqlalchemy.orm import relationship
 
-keyword_product = Table(
-    "keyword_product",
-    Base.metadata,
-    Column("keyword_id", Integer, ForeignKey("keyword_table.id"), primary_key=True),
-    Column("product_id", Integer, ForeignKey("product_table.id"), primary_key=True),
-)
+class KeywordProduct(Base):
+    __tablename__ = 'keyword_product'
+
+    id = Column(Integer, primary_key=True, index=True)
+    keyword_id = Column(Integer, ForeignKey('keyword_table.id'))
+    product_id = Column(Integer, ForeignKey('product_table.id'))
+    keyword = relationship('Keyword', back_populates='products')
+    product = relationship('Product', back_populates='keywords')
 
 class Keyword(Base):
     __tablename__ = 'keyword_table'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    products = relationship("Product", secondary=keyword_product, back_populates="keywords")
+    products = relationship('KeywordProduct', back_populates='keyword')
 
