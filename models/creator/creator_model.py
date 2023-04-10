@@ -23,6 +23,7 @@ class Creator(Base):
     user = relationship("User", backref="creator", primaryjoin="User.id == Creator.user_id")
     products = relationship("Product", back_populates="creator")
     materials = relationship("Material", back_populates="creator")
+    likes = relationship("CreatorLike", back_populates="creator")
     created_at = Column(
         DateTime,
         nullable=False,

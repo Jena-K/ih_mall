@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from infrastructure.database import User, get_async_session
 from models.creator.creator_schema import CreateCreatorDto, CreateResponseCreatorDto, GetCreatorDto, UpdateCreatorDto
 
-from repositories import creator_repository
+from repositories import creator_repository, like_repository
 from auth.users import current_active_user
 
 router = APIRouter(prefix="/creator", tags=["creator"])

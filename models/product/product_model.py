@@ -31,8 +31,7 @@ class Product(Base):
     is_handmade = Column(Boolean, default=False)
     is_recommanded = Column(Boolean, default=False)
     keywords = relationship('KeywordProduct', back_populates='product')
-    like_id = Column(Integer, ForeignKey("like_table.id"))
-    likes = relationship('Like', back_populates='product')
+    likes = relationship('ProductLike', back_populates='product')
     created_at = Column(
         DateTime,
         nullable=False,
