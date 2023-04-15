@@ -1,7 +1,7 @@
 from infrastructure.database import Base
 from models.profile.address_model import Address
 from models.profile.profile_model import Profile
-from models.creator.creator_model import Creator
+from models.creator.creator_model import Creator, BankInformation, DeliveryPolicy
 
 from models.product.category_model import Category
 from models.product.material_model import Material

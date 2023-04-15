@@ -97,7 +97,7 @@ async def get_product_images(db: AsyncSession):
     product_images = await db.execute(
         select(ProductImage)
     )
-    
+    ]
     product_images = product_images.scalars()
     
     if product_images is None:
