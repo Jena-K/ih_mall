@@ -9,6 +9,7 @@ from models.creator.creator_model import Creator
 from models.product.keyword_model import Keyword, KeywordProduct
 from models.product.material_model import Material
 from models.product.option_model import Option
+from models.product.product_image_model import ProductImage
 from models.product.product_model import Product
 from sqlalchemy.orm import selectinload, joinedload
 from models.product.product_schema import CreateProductDto, OptionDto, ProductImageDto, ResponseCreateProductDto, UpdateProductDto
@@ -68,7 +69,7 @@ async def create_product(
 
     # Create and connect keywords to the product
     for keyword in request.keywords or []:
-        existing_keyword = await db.execute(select(Keyword).where(Keyword.name == keyword.name))
+        existing_keyword = await db.execute(select(Keyword).where(Keyword.name == keyword))
         existing_keyword = existing_keyword.scalar_one_or_none()
         if existing_keyword:
             keyword_product = KeywordProduct(
@@ -77,7 +78,7 @@ async def create_product(
             )
             db.add(keyword_product)
         else:
-            new_keyword = Keyword(name=keyword.name)
+            new_keyword = Keyword(name=keyword)
             db.add(new_keyword)
             await db.commit()
             await db.refresh(new_keyword)
@@ -86,6 +87,12 @@ async def create_product(
                 product_id=new_product.id,
             )
             db.add(keyword_product)
+    
+    # Connect Images to the product
+    for image in request.images or []:
+        existing_image = await db.execute(select(ProductImage).where(ProductImage.id == image))
+        existing_image = existing_image.scalar_one_or_none()
+        existing_image.product_id = new_product.id
     await db.commit()
 
     return new_product
