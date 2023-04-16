@@ -1,5 +1,5 @@
 import io
-from typing import Optional
+from typing import List, Optional
 from fastapi import UploadFile
 from pydantic import BaseModel, validator
 import os
@@ -11,7 +11,7 @@ class CreateProductImageDto(BaseModel):
 
 class ResponseCreateProductImageDto(BaseModel):
     id: int
-    product_id: int
+    product_id: Optional[int]
     url: str
 
     class Config:
