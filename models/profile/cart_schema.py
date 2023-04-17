@@ -7,6 +7,7 @@ class OptionDTO(BaseModel):
     option_id: int
     cnt: int
 
+
 class ItemDTO(BaseModel):
     product_id: int
     option_id: int
@@ -25,18 +26,17 @@ class ResponseItemDTO(BaseModel):
     cnt: int
 
 
-class ResponseCartDto(BaseModel):
+class ResponseCartDTO(BaseModel):
     id: int
-    items: List[ResponseItemDTO]
-
-    class Config:
-        orm_mode = True
+    product_id: int
+    option_id: int
+    cnt: int
 
 
 class ResponseCartListDTO(BaseModel):
     # creator_id: int
     creator_nickname: str
-    items: List[ResponseItemDTO]
+    items: List[ResponseCartDTO]
 
 
 class DeleteCartDto(BaseModel):

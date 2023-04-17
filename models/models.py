@@ -2,6 +2,7 @@ from infrastructure.database import Base
 from models.profile.address_model import Address
 from models.profile.profile_model import Profile
 from models.profile.cart_model import Cart
+
 from models.creator.creator_model import Creator
 from models.creator.creator_model import Creator, BankInformation, DeliveryPolicy
 

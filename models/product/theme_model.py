@@ -20,5 +20,3 @@ class Theme(Base):
     start_at = Column(Date)
     end_at = Column(Date)
     theme_product = relationship("ThemeProduct", backref="theme")
-
-
