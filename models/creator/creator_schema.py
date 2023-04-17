@@ -12,6 +12,7 @@ class CreateCreatorDto(BaseModel):
     businessRegistrationCertification: str = Field(title="사업자 등록증")
     address: str = Field(title="작가 주소")
     sns: str = Field(title="작가 sns")
+    picture_url: Optional[str]
 
 
 class CreateResponseCreatorDto(BaseModel):
@@ -27,6 +28,7 @@ class CreateResponseCreatorDto(BaseModel):
     address: str = Field(title="작가 주소")
     sns: str = Field(title="작가 sns")
     is_certified: bool
+    picture_url: Optional[str]
 
     class Config:
         orm_mode = True
@@ -42,6 +44,7 @@ class UpdateCreatorDto(BaseModel):
     businessRegistrationCertification: Optional[str] = Field(title="사업자 등록증")
     address: Optional[str] = Field(title="작가 주소")
     sns: Optional[str] = Field(title="작가 sns")
+    picture_url: Optional[str]
 
 
 class GetCreatorDto(BaseModel):

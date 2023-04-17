@@ -10,36 +10,13 @@ from models.creator.creator_model import Creator
 from models.product.product_image_model import ProductImage
 from sqlalchemy.orm import selectinload
 from models.product.product_image_schema import CreateProductImageDto, UpdateProductImageDto
-
-import os
-import uuid
-import boto3
-from dotenv import load_dotenv
 from PIL import Image
 
-def upload_image_to_s3(request: CreateProductImageDto):
-    
-    load_dotenv()
-    
-    image_extension = request.image.filename.split(".")[-1]
-
-    # Create unique file name and save to S3
-    filename = str(uuid.uuid4()) + "." + image_extension
-
-    bucket_name = os.environ['S3_BUCKET_NAME']
-
-    s3 = boto3.resource("s3")
-    bucket = s3.Bucket(bucket_name)
-    
-    bucket.upload_fileobj(request.image.file, filename, ExtraArgs = {"ACL": "public-read"})
-
-    url = f"https://{bucket_name}.s3.amazonaws.com/{filename}"
-
-    return url
+from repositories.utils import upload_image_to_s3
 
 
 
-async def create_product_images(
+async def create_product_image(
     db: AsyncSession,
     current_user: User,
     request: CreateProductImageDto

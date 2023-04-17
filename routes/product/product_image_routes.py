@@ -16,7 +16,7 @@ async def create_product_image(
     db: AsyncSession = Depends(get_async_session),
     current_user: User = Depends(current_active_user),
 ):
-    product_image = await product_image_repository.create_product_images(db, current_user, image)
+    product_image = await product_image_repository.create_product_image(db, current_user, image)
     return product_image
 
 # Update Product

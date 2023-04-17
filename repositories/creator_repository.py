@@ -8,6 +8,26 @@ from auth.users import current_active_user
 from models.creator.creator_model import Creator
 from sqlalchemy.orm import selectinload
 from models.creator.creator_schema import CreateCreatorDto, GetCreatorDto, UpdateCreatorDto
+from models.product.product_image_schema import CreateProductImageDto
+from repositories.utils import upload_image_to_s3
+
+async def create_creator_image(
+    db: AsyncSession,
+    current_user: User,
+    request: CreateProductImageDto
+):
+    if current_user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Authorized")
+    
+    # 처리 불가 이미지 반송
+    image_extension = request.image.filename.split(".")[-1]
+    if image_extension not in ["png", "jpg"]:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image extention is not allowed")
+    
+    image_url = upload_image_to_s3(request)
+
+    return image_url
+
 
 async def create_creator(db: AsyncSession, current_user: User, request: Optional[CreateCreatorDto] = None):
 
@@ -35,6 +55,9 @@ async def create_creator(db: AsyncSession, current_user: User, request: Optional
         sns=request.sns,
         is_certified=False
     )
+    if request.picture_url:
+        new_creator.picture_url = request.picture_url
+
     db.add(new_creator)
     await db.commit()
     await db.refresh(new_creator)
@@ -58,6 +81,9 @@ async def update_creator(db: AsyncSession, current_user: User, request: Optional
     for key, value in request:
         if value is not None:
             setattr(creator, key, value)
+    
+    if request.picture_url:
+        creator.picture_url = request.picture_url
     
     await db.commit()
     await db.refresh(creator)

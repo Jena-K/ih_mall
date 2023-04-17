@@ -26,6 +26,7 @@ class Creator(Base):
     likes = relationship("CreatorLike", back_populates="creator")
     bank_information = relationship("BankInformation", back_populates="creator")
     delivery_policy = relationship("DeliveryPolicy", back_populates="creator")
+    picture_url = Column(String)
     created_at = Column(
         DateTime,
         nullable=False,

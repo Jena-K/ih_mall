@@ -6,12 +6,14 @@ from pydantic import BaseModel
 class RegisterProfileDto(ProfileBaseDto):
     phone: str
     name: str
+    picture_url: Optional[str]
 
 
 class ResponseRegisterProfileDto(BaseModel):
     email: Optional[str]
     phone: Optional[str]
     provider: Optional[str]
+    picture_url: Optional[str]
 
     class Config:
         orm_mode = True
@@ -20,6 +22,7 @@ class ResponseRegisterProfileDto(BaseModel):
 class UpdateProfileDto(BaseModel):
     phone: Optional[str]
     name: Optional[str]
+    picture_url: Optional[str]
 
 
 # AddressDto for User Display
