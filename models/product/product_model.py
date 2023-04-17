@@ -32,6 +32,7 @@ class Product(Base):
     is_recommanded = Column(Boolean, default=False)
     keywords = relationship('KeywordProduct', back_populates='product')
     likes = relationship('ProductLike', back_populates='product')
+    themes = relationship("ThemeProduct", backref="product")
     created_at = Column(
         DateTime,
         nullable=False,

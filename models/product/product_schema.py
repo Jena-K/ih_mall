@@ -5,13 +5,16 @@ from models.enums import ProductStatus
 from models.product.material_model import Material
 from models.product.product_model import Product
 
+
 class OptionDtoForCreateProductDto(BaseModel):
     name: str
     added_price: int
     stock: int
 
+
 class KeywordDtoForCreateProductDto(BaseModel):
     name: str
+
 
 class CreateProductDto(BaseModel):
     category_id: int
@@ -26,6 +29,7 @@ class CreateProductDto(BaseModel):
     options: Optional[List[OptionDtoForCreateProductDto]]
     keywords: Optional[List[KeywordDtoForCreateProductDto]]
 
+
 class ProductImageDto(BaseModel):
     id: int
     name: Optional[str]
@@ -33,6 +37,7 @@ class ProductImageDto(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class OptionDto(BaseModel):
     id: int
@@ -43,6 +48,7 @@ class OptionDto(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class MaterialDto(BaseModel):
     creator_id: Optional[int]
@@ -55,6 +61,7 @@ class MaterialDto(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class ResponseCreateProductDto(BaseModel):
     id: int

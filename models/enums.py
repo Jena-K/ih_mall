@@ -6,6 +6,7 @@ class RoleType(enum.Enum):
     creator = "creator"
     admin = "admin"
 
+
 class ProductStatus(enum.Enum):
     pending= "심사대기"
     rejected = "심사거절"

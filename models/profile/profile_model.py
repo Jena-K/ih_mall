@@ -6,6 +6,7 @@ from models.enums import RoleType
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey
 
+
 class Profile(Base):
     __tablename__ = "profile_table"
     id = Column(Integer, primary_key=True, index=True)

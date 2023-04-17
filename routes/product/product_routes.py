@@ -2,6 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from infrastructure.database import User, get_async_session
+
 from models.product.product_schema import CreateProductDto, ResponseCreateProductDto, UpdateProductDto
 from repositories import product_repository
 from auth.users import current_active_user

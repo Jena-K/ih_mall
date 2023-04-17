@@ -91,7 +91,6 @@ async def create_product(
     return new_product
 
 
-
 # Update Product
 async def update_product(db: AsyncSession, current_user: User, request: Optional[UpdateProductDto] = None):
 
@@ -126,6 +125,7 @@ async def update_product(db: AsyncSession, current_user: User, request: Optional
     
     return product
 
+
 # Get Product (Single)
 async def get_product(db: AsyncSession, request: Optional[UpdateProductDto]):
     query = select(Product).where(Product.id == request.id)
@@ -134,7 +134,6 @@ async def get_product(db: AsyncSession, request: Optional[UpdateProductDto]):
 
     if product is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
-    
 
     return product
 

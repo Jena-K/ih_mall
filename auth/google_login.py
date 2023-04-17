@@ -27,6 +27,7 @@ GOOGLE_SCOPE_PROFILE = "https://www.googleapis.com/auth/userinfo.profile"
 GOOGLE_SCOPE_EMAIL = "https://www.googleapis.com/auth/userinfo.email"
 BASE_PROFILE_SCOPES = [GOOGLE_SCOPE_PROFILE, GOOGLE_SCOPE_EMAIL, "openid"]
 
+
 # 카카오로그인 시작
 class GoogleOAuth2(BaseOAuth2[Dict[str, Any]]):
     display_name = "Google"
@@ -66,8 +67,8 @@ class GoogleOAuth2(BaseOAuth2[Dict[str, Any]]):
 
             return str(account_info.get('id')), account_info.get('email')
 
-# 카카오로그인 끝
 
+# 카카오로그인 끝
 auth_backend_google = AuthenticationBackend(
     name="jwt-google",
     transport=bearer_transport,

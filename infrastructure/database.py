@@ -17,10 +17,6 @@ load_dotenv()
 
 environment = os.environ.get('ENVIRONMENT')
 
-host = None
-user = None
-password = None
-db_name = None
 
 if environment == 'production':
     host = os.environ.get('HEROKU_CLIENT_HOST')
@@ -34,8 +30,8 @@ else:
     db_name = os.environ.get('LOCAL_DATABASE_DB_NAME')
 
 
-
 DATABASE_URL = f'postgresql+asyncpg://{user}:{password}@{host}:5432/{db_name}'
+
 
 class Base(DeclarativeBase):
     pass

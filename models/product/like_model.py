@@ -6,6 +6,7 @@ from sqlalchemy.sql.sqltypes import UUID, Integer, String
 # from modules.product.domain.material import Material
 from sqlalchemy.orm import relationship
 
+
 class ProductLike(Base):
     __tablename__ = 'product_like_table'
     id = Column(Integer, primary_key=True, index=True)

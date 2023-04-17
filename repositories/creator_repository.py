@@ -9,6 +9,7 @@ from models.creator.creator_model import Creator
 from sqlalchemy.orm import selectinload
 from models.creator.creator_schema import CreateCreatorDto, GetCreatorDto, UpdateCreatorDto
 
+
 async def create_creator(db: AsyncSession, current_user: User, request: Optional[CreateCreatorDto] = None):
 
     creator = await db.execute(
@@ -20,7 +21,6 @@ async def create_creator(db: AsyncSession, current_user: User, request: Optional
 
     if existing_creator:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Creator already exist")
-
     
     new_creator = Creator(
         user_id=current_user.id,

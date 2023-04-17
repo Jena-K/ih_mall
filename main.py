@@ -58,6 +58,7 @@ app.include_router(google_oauth_router, prefix="/auth/google", tags=["auth"])
 app.include_router(kakao_oauth_router, prefix="/auth/kakao", tags=["auth"])
 app.include_router(naver_oauth_router, prefix="/auth/naver", tags=["auth"])
 
+
 @app.get("/authenticated-route")
 async def authenticated_route(user: User = Depends(current_active_user)):
     return {"message": f"Hello {user.email}!"}
@@ -72,6 +73,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.on_event("startup")
 async def on_startup():

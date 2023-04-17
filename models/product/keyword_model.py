@@ -6,6 +6,7 @@ from infrastructure.database import Base
 # from modules.product.domain.material import Material
 from sqlalchemy.orm import relationship
 
+
 class KeywordProduct(Base):
     __tablename__ = 'keyword_product'
 
@@ -14,6 +15,7 @@ class KeywordProduct(Base):
     product_id = Column(Integer, ForeignKey('product_table.id'))
     keyword = relationship('Keyword', back_populates='products')
     product = relationship('Product', back_populates='keywords')
+
 
 class Keyword(Base):
     __tablename__ = 'keyword_table'

@@ -1,6 +1,7 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
+
 class CreateMaterialDto(BaseModel):
     name: str
     material: str
@@ -8,6 +9,7 @@ class CreateMaterialDto(BaseModel):
     size: str
     origin: str
     caution: str
+
 
 class ResponseCreateMaterialDto(BaseModel):
     id: int
@@ -21,6 +23,7 @@ class ResponseCreateMaterialDto(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class UpdateMaterialDto(BaseModel):
     id: int
