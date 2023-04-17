@@ -24,6 +24,9 @@ class Creator(Base):
     products = relationship("Product", back_populates="creator")
     materials = relationship("Material", back_populates="creator")
     likes = relationship("CreatorLike", back_populates="creator")
+    bank_information = relationship("BankInformation", back_populates="creator")
+    delivery_policy = relationship("DeliveryPolicy", back_populates="creator")
+    picture_url = Column(String)
     created_at = Column(
         DateTime,
         nullable=False,
@@ -35,3 +38,28 @@ class Creator(Base):
         server_default=sqlalchemy.func.now(),
         onupdate=sqlalchemy.func.now(),
     )
+
+
+class BankInformation(Base):
+    __tablename__ = "bank_information_table"
+    id = Column(Integer, primary_key=True, index=True)
+    creator_id = Column(Integer, ForeignKey("creator_table.id"))
+    creator = relationship("Creator", back_populates="bank_information")
+    bank_name = Column(String)
+    account_holder_name = Column(String)
+    account_number = Column(String)
+    is_issue_cash_receipt = Column(Boolean, default=True)
+
+
+class DeliveryPolicy(Base):
+    __tablename__ = "delivery_policy_table"
+    id = Column(Integer, primary_key=True, index=True)
+    creator_id = Column(Integer, ForeignKey("creator_table.id"))
+    creator = relationship("Creator", back_populates="delivery_policy")
+    vendor = Column(String)
+    primary_fee = Column(String)
+    is_semi_registered = Column(Boolean, default=False)
+    advanced_fee = Column(Integer)
+    free_shipping_amt = Column(Integer)
+    est_departure = Column(String)
+    refund_policy = Column(String)

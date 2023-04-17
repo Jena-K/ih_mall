@@ -20,14 +20,8 @@ async def create_category(request: UpdateCategoryDto, db: Session = Depends(get_
     category = await category_repository.update_category(db, current_user, request)
     return category
 
-# Get Product
-@router.get("/", response_model=ResponseCreateCategoryDto)
-async def update_address(request: GetCategoryDto, db: Session = Depends(get_async_session)):
-    category = await category_repository.get_category(db, request)
-    return category
-
-# Get Product List
-@router.get("/category_all", response_model=List[ResponseCreateCategoryDto])
+# Get Category List
+@router.get("/", response_model=List[ResponseCreateCategoryDto])
 async def update_address(db: Session = Depends(get_async_session)):
     categories = await category_repository.get_category_list(db)
     

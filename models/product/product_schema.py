@@ -16,6 +16,10 @@ class KeywordDtoForCreateProductDto(BaseModel):
     name: str
 
 
+\class ImageDtoForCreateProductDto(BaseModel):
+    id: int
+
+
 class CreateProductDto(BaseModel):
     category_id: int
     name: str
@@ -27,7 +31,8 @@ class CreateProductDto(BaseModel):
     product_images: Optional[List[int]]
     is_handmade: Optional[bool]
     options: Optional[List[OptionDtoForCreateProductDto]]
-    keywords: Optional[List[KeywordDtoForCreateProductDto]]
+    keywords: Optional[List[str]]
+    images: List[int]
 
 
 class ProductImageDto(BaseModel):
