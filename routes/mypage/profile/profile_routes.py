@@ -1,7 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.db import get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from infrastructure.database import User, get_async_session

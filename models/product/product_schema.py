@@ -16,7 +16,7 @@ class KeywordDtoForCreateProductDto(BaseModel):
     name: str
 
 
-\class ImageDtoForCreateProductDto(BaseModel):
+class ImageDtoForCreateProductDto(BaseModel):
     id: int
 
 
