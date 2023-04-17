@@ -1,9 +1,7 @@
-from fastapi import Depends, FastAPI
 
-# from infrastructure.database.db import database
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from infrastructure.database import create_db_and_tables, engine, User
-from models import models
 from routes.routes import api_router
 from starlette.middleware.sessions import SessionMiddleware
 

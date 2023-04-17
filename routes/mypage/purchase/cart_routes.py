@@ -2,17 +2,8 @@
 from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
-
 from infrastructure.database import User, get_async_session
-from models.profile.profile_schema import (
-    RegisterProfileDto,
-    ResponseRegisterProfileDto,
-    UpdateProfileDto,
-    ProfileDisplayDto,
-)
-from models.profile.cart_schema import ItemDTO, ResponseItemDTO, CreateCartDto, DeleteCartDto, UpdateCartDTO
-
+from models.profile.cart_schema import CreateCartDto, DeleteCartDto, UpdateCartDTO
 from repositories import cart_repository
 from auth.users import current_active_user
 
