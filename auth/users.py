@@ -1,8 +1,9 @@
+
 import os
 import uuid
 from typing import Optional
 
-from fastapi import Depends, Request, status
+from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
 from fastapi_users.authentication import (
     AuthenticationBackend,
@@ -11,12 +12,7 @@ from fastapi_users.authentication import (
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
 from httpx_oauth.clients.google import GoogleOAuth2
-from app.db import create_db_and_tables
-from infrastructure.database import User, get_async_session, get_user_db
-from models.profile.profile_model import Profile
-from sqlalchemy.orm.session import Session
-from fastapi.responses import RedirectResponse
-from starlette.datastructures import URL
+from infrastructure.database import User, get_user_db
 
 SECRET = "SECRET"
 

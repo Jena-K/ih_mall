@@ -1,11 +1,11 @@
 
 from typing import List
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class OptionDTO(BaseModel):
     option_id: int
-    cnt: int
+    cnt: int = Field(title='옵션 수량')
 
 
 class ItemDTO(BaseModel):
@@ -33,12 +33,6 @@ class ResponseCartDTO(BaseModel):
     cnt: int
 
 
-class ResponseCartListDTO(BaseModel):
-    # creator_id: int
-    creator_nickname: str
-    items: List[ResponseCartDTO]
-
-
 class DeleteCartDto(BaseModel):
     ids: List[int]
 
@@ -46,3 +40,19 @@ class DeleteCartDto(BaseModel):
 class UpdateCartDTO(BaseModel):
     id: int
     cnt: int
+
+
+class SimpleCartItemDto(BaseModel):
+    id: int
+    name: str
+    price: int
+    option_id: int
+    option_name: str
+    cnt: int
+
+
+class ResponseCartListDTO(BaseModel):
+    # creator_id: int
+    nickname: str
+    items: List[SimpleCartItemDto]
+

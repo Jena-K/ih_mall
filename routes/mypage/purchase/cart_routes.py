@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from infrastructure.database import User, get_async_session
-from models.profile.cart_schema import CreateCartDto, DeleteCartDto, UpdateCartDTO
+from models.profile.cart_schema import CreateCartDto, DeleteCartDto, UpdateCartDTO, ResponseCartListDTO
 from repositories import cart_repository
 from auth.users import current_active_user
 
@@ -30,15 +30,7 @@ async def del_cart_item(request: UpdateCartDTO, db: Session = Depends(get_async_
     return cart
 
 
-@router.get("/get", response_model=dict)
+@router.get("/get", response_model=list)
 async def get_cart_item(db: Session = Depends(get_async_session), current_user: User = Depends(current_active_user)):
     cart = await cart_repository.get_cart(db, current_user)
     return cart
-
-
-
-# # 내 프로필 조회
-# @router.get("/", response_model=ProfileDisplayDto)
-# async def query_profile(db: Session = Depends(get_async_session), current_user: User = Depends(current_active_user)):
-#     profile = await profile_repository.my_profile(db, current_user)
-#     return profile

@@ -49,3 +49,8 @@ class UpdateCreatorDto(BaseModel):
 
 class GetCreatorDto(BaseModel):
     id: int
+
+
+class SimpleCreatorDTO(BaseModel):
+    id: int
+    nickname: str
